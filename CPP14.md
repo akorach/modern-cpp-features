@@ -28,6 +28,15 @@ It is possible to separate digits with `'`.
 0b1111'1111 // == 255
 ```
 
+### Digit separators
+From Wikipedia: In C++14, the single-quote character may be used arbitrarily as a digit separator in numeric literals, both integer literals and floating point literals.
+```c++
+auto integer_literal = 1'000'000;
+auto floating_point_literal = 0.000'015'3;
+auto binary_literal = 0b0100'1100'0110;
+auto silly_example = 1'0'0'000'00;
+```
+
 ### Generic lambda expressions
 C++14 now allows the `auto` type-specifier in the parameter list, enabling polymorphic lambdas.
 ```c++
