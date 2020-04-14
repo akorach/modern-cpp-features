@@ -97,6 +97,7 @@ auto g = [](auto& x) -> auto& { return f(x); };
 int y = 123;
 int& z = g(y); // reference to `y`
 ```
+More on Wikipedia about recursion: https://en.wikipedia.org/wiki/C%2B%2B14#Function_return_type_deduction
 
 ### decltype(auto)
 The `decltype(auto)` type-specifier also deduces a type like `auto` does. However, it deduces return types while keeping their references and cv-qualifiers, while `auto` will not.
