@@ -154,13 +154,55 @@ constexpr T e  = T(2.7182818284590452353);
 This makes it possible to arbitrarily choose the precision you need for your constants and constant expressions that use them. In C++20 there's a library defining such constants based on this feature.
 
 ### [[deprecated]] attribute
-C++14 introduces the `[[deprecated]]` attribute to indicate that a unit (function, class, etc) is discouraged and likely yield compilation warnings. If a reason is provided, it will be included in the warnings.
+C++14 introduces the `[[deprecated]]` attribute to indicate that a unit (function, class, etc) is discouraged and will yield a compilation warning. If a reason is provided, it will be included in the warning.
 ```c++
 [[deprecated]]
 void old_method();
 [[deprecated("Use new_method instead")]]
 void legacy_method();
+
+//-----------------------
+
+// Deprecate a function
+[[deprecated]]
+void foo();
+
+// Deprecate a variable
+[[deprecated]]
+int x;
+
+// Deprecate one declarator in a multi-declarator declaration
+int y [[deprecated]], z;
+
+// Deprecate a function parameter
+int triple([[deprecated]] int x);
+
+// Deprecate a class (or struct)
+class [[deprecated]] my_class {
+	public:
+		// Deprecate a member
+		[[deprecated]] int member;
+};
+
+// Deprecate a variable of a class defined in the same line
+[[deprecated]] class C { } c;
+
+// Deprecate an enum
+enum [[deprecated]] animals {
+	CAT, DOG, MOUSE
+};
+
+// Deprecate a typedef
+[[deprecated]]
+typedef int type;
+
+// Deprecate a template specialization
+template <typename T> class templ;
+
+template <>
+class [[deprecated]] templ<int> {};
 ```
+From: [Joseph Mansfield](https://josephmansfield.uk/articles/marking-deprecated-c++14.html)
 
 ## C++14 Library Features
 
