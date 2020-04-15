@@ -100,38 +100,33 @@ int& z = g(y); // reference to `y`
 More on Wikipedia about recursion: https://en.wikipedia.org/wiki/C%2B%2B14#Function_return_type_deduction
 
 ### decltype(auto)
-The `decltype(auto)` type-specifier also deduces a type like `auto` does. However, it deduces return types while keeping their references and cv-qualifiers, while `auto` will not.
+The `decltype(auto)` type-specifier also deduces a type like `auto` does. However, it deduces return types while keeping their references and cv-qualifiers, while `auto` will not. From Scott Meyers' _Effective Modern C++_:
 ```c++
-const int x = 0;
-auto x1 = x; // int
-decltype(auto) x2 = x; // const int
-int y = 0;
-int& y1 = y;
-auto y2 = y1; // int
-decltype(auto) y3 = y1; // int&
-int&& z = 0;
-auto z1 = std::move(z); // int
-decltype(auto) z2 = std::move(z); // int&&
+template<typename Container, typename Index>
+auto authAndAccess(Container& c, Index i) -> decltype(c[i]) // the return type depends on the container type
+{
+  authenticateUser();
+  return c[i];
+}
 ```
+Is the same as:
 ```c++
-// Note: Especially useful for generic code!
-
-// Return type is `int`.
-auto f(const int& i) {
- return i;
+template<typename Container, typename Index>
+decltype(auto) authAndAccess(Container& c, Index i) // the return type depends on the container type
+{
+  authenticateUser();
+  return c[i];
 }
-
-// Return type is `const int&`.
-decltype(auto) g(const int& i) {
- return i;
-}
-
-int x = 123;
-static_assert(std::is_same<const int&, decltype(f(x))>::value == 0);
-static_assert(std::is_same<int, decltype(f(x))>::value == 1);
-static_assert(std::is_same<const int&, decltype(g(x))>::value == 1);
 ```
-
+More generic:
+```c++
+template<typename Container, typename Index>
+decltype(auto) authAndAccess(Container&& c, Index i) // also accepts universal references
+{
+  authenticateUser();
+  return std::forward<Container>(c)[i];
+}
+```
 See also: `decltype` (C++11).
 
 ### Relaxing constraints on constexpr functions
