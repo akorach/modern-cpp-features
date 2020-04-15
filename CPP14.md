@@ -151,6 +151,7 @@ constexpr T pi = T(3.1415926535897932385);
 template<class T>
 constexpr T e  = T(2.7182818284590452353);
 ```
+This makes it possible to arbitrarily choose the precision you need for your constants and constant expressions that use them. In C++20 there's a library defining such constants based on this feature.
 
 ### [[deprecated]] attribute
 C++14 introduces the `[[deprecated]]` attribute to indicate that a unit (function, class, etc) is discouraged and likely yield compilation warnings. If a reason is provided, it will be included in the warnings.
