@@ -204,6 +204,16 @@ class [[deprecated]] templ<int> {};
 ```
 From: [Joseph Mansfield](https://josephmansfield.uk/articles/marking-deprecated-c++14.html)
 
+### Aggregate initialisation improvements
+Adding _in-class member initializers_ does not make a class a non-aggregate. The following example is still an aggregate:
+```c++
+struct SimplePoint
+{
+  int x = 7;
+  int y = 3;
+};
+```
+
 ## C++14 Library Features
 
 ### User-defined literals for standard library types
