@@ -130,7 +130,7 @@ decltype(auto) authAndAccess(Container&& c, Index i) // also accepts universal r
 See also: `decltype` (C++11).
 
 ### Relaxing constraints on constexpr functions
-In C++11, `constexpr` function bodies could only contain a very limited set of syntaxes, including (but not limited to): `typedef`s, `using`s, and a single `return` statement. In C++14, the set of allowable syntaxes expands greatly to include the most common syntax such as `if` statements, multiple `return`s, loops, etc.
+In C++11, `constexpr` function bodies could only contain a very limited set of syntaxes, including (but not limited to): `typedef`s, `using`s, and a single `return` statement. In C++14, the set of allowable syntaxes expands greatly to include the most common syntax such as `if` statements, multiple `return`s, loops, other `constexpr` functions or fundamental data types that have to be initialised with a `constexpr` expression. 
 ```c++
 constexpr int factorial(int n) {
   if (n <= 1) {
