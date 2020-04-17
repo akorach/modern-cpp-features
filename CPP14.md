@@ -253,14 +253,14 @@ Full example: https://en.cppreference.com/w/cpp/utility/integer_sequence
 * Prevents code repetition when specifying the underlying type the pointer shall hold.
 * Most importantly, it provides exception-safety. Suppose we were calling a function `foo` like so:
 ```c++
-foo(std::unique_ptr<T>{new T{}}, function_that_throws(), std::unique_ptr<T>{new T{}});
+foo(std::unique_ptr<T>(new T()), function_that_throws());
 ```
-The compiler is free to call `new T{}`, then `function_that_throws()`, and so on... Since we have allocated data on the heap in the first construction of a `T`, we have introduced a leak here. With `std::make_unique`, we are given exception-safety:
+The compiler is given a lot of flexibility in terms of how it handles this call. It could create a new T, then call function_that_throws(), then create the std::unique_ptr that manages the dynamically allocated T. If function_that_throws() throws an exception, then the T that was allocated will not be deallocated, because the smart pointer to do the deallocation hasn’t been created yet. This leads to T being leaked.
 ```c++
-foo(std::make_unique<T>(), function_that_throws(), std::make_unique<T>());
+foo(std::make_unique<T>(), function_that_throws());
 ```
-
-See the C++11 section on smart pointers for more information on `std::unique_ptr` and `std::shared_ptr`.
+std::make_unique() doesn’t suffer from this problem because the creation of the object T and the creation of the std::unique_ptr happen inside the std::make_unique() function, where there’s no ambiguity about order of execution.
+After: https://www.learncpp.com/cpp-tutorial/15-5-stdunique_ptr/
 
 ## Acknowledgements
 * [cppreference](http://en.cppreference.com/w/cpp) - especially useful for finding examples and documentation of new library features.
