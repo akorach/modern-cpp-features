@@ -242,9 +242,10 @@ decltype(auto) a2t_impl(const Array& a, std::integer_sequence<std::size_t, I...>
 
 template<typename T, std::size_t N, typename Indices = std::make_index_sequence<N>>
 decltype(auto) a2t(const std::array<T, N>& a) {
-  return a2t_impl(a, Indices());
+  return a2t_impl(a, Indices{});
 }
 ```
+Full example: https://en.cppreference.com/w/cpp/utility/integer_sequence
 
 ### std::make_unique
 `std::make_unique` is the recommended way to create instances of `std::unique_ptr`s due to the following reasons:
