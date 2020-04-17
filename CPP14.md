@@ -217,13 +217,16 @@ struct SimplePoint
 ## C++14 Library Features
 
 ### User-defined literals for standard library types
-New user-defined literals for standard library types, including new built-in literals for `chrono` and `basic_string`. These can be `constexpr` meaning they can be used at compile-time. Some uses for these literals include compile-time integer parsing, binary literals, and imaginary number literals.
+C++11 added user-defined literals, but didn’t use them in the standard library. Now some very useful ones work, including built-in literals for `chrono` and `basic_string`. These can be `constexpr` meaning they can be used at compile-time. Some uses for these literals include compile-time integer parsing, binary literals, and imaginary number literals.
 ```c++
 using namespace std::chrono_literals;
-auto day = 24h;
-day.count(); // == 24
-std::chrono::duration_cast<std::chrono::minutes>(day).count(); // == 1440
+using namespace std::string_literals;
+
+auto string = "hello there"s;   // type std::string
+auto minute = 60s;              // type std::chrono::duration = 60 seconds
+auto day    = 24h;              // type std::chrono::duration = 24 hours
 ```
+Note 's' means “string” when used on a string literal, and “seconds” when used on an integer literal, without ambiguity.
 
 ### Compile-time integer sequences
 The class template `std::integer_sequence` represents a compile-time sequence of integers. There are a few helpers built on top:
