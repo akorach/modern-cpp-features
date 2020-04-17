@@ -262,6 +262,16 @@ foo(std::make_unique<T>(), function_that_throws());
 std::make_unique() doesn’t suffer from this problem because the creation of the object T and the creation of the std::unique_ptr happen inside the std::make_unique() function, where there’s no ambiguity about order of execution.
 After: https://www.learncpp.com/cpp-tutorial/15-5-stdunique_ptr/
 
+### std::shared_timed_mutex
+`std::mutex` - normal mutex; can be `lock`ed (blocks) or `try_lock`ed (returns if the lock isn't available).
+`std::timed_mutex` - can be additionally `try_lock_for`ed (returns after a duration) and `try_lock_until`ed (returns when a specific time point is reached.
+`std::shared_mutex` (C++17) - provides both exclusive and shared locking with the addition of `lock_shared` and `try_lock_shared`.
+If one thread has acquired the exclusive lock (through `lock`, `try_lock`), no other threads can acquire the lock (including the shared).
+If one thread has acquired the shared lock (through `lock_shared`, `try_lock_shared`), no other thread can acquire the *exclusive* lock, but can acquire the *shared* lock.
+`std::shared_timed_mutex` - allows for timed lock acquisition trials for locks of both types.
+
+Interesting trivia on why `std:shared_timed_mutex` was added in C++14 but `std::shared_mutex` only in C++17 https://stackoverflow.com/questions/40207171/why-shared-timed-mutex-is-defined-in-c14-but-shared-mutex-in-c17
+
 ## Acknowledgements
 * [cppreference](http://en.cppreference.com/w/cpp) - especially useful for finding examples and documentation of new library features.
 * [C++ Rvalue References Explained](http://thbecker.net/articles/rvalue_references/section_01.html) - a great introduction I used to understand rvalue references, perfect forwarding, and move semantics.
