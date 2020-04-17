@@ -276,6 +276,42 @@ If one thread has acquired the shared lock (through `lock_shared`, `try_lock_sha
 
 Interesting trivia on why `std:shared_timed_mutex` was added in C++14 but `std::shared_mutex` only in C++17 https://stackoverflow.com/questions/40207171/why-shared-timed-mutex-is-defined-in-c14-but-shared-mutex-in-c17
 
+### Heterogeneous lookup in ordered associative containers
+The C++ Standard Library defines four associative container classes. These classes allow the user to look up a value based on a value of that type. The map containers allow the user to specify a key and a value, where lookup is done by key and returns a value. However, the lookup is always done by the specific key type, whether it is the key as in maps or the value itself as in sets.
+
+C++14 allows the lookup to be done via an arbitrary type for the ordered types (`std::map`, `std::set`), so long as the comparison operator can compare that type with the actual key type.[16] This would allow a map from `std::string` to some value to compare against a `const char*` or any other type for which an `operator<` overload is available. 
+
+It is also useful for indexing composite objects in a `std::set` by the value of a single member (primary key) without forcing the user of find to create a dummy object (for example creating an entire struct Person to find a person by name).
+
+To preserve backwards compatibility, heterogeneous lookup is only allowed when the comparator given to the associative container allows it. The standard library classes `std::less<>` and `std::greater<>` are augmented to allow heterogeneous lookup.
+```c++
+struct Product {
+    std::string mName;
+    std::string mDescription;
+    double mPrice;
+};
+
+bool operator<(const Product& p1, const Product& p2) { 
+    return p1.mName < p2.mName; 
+}
+
+std::set<Product> products {
+    { "Car", "This is a super car that costs a lot", 100'000.0 },
+    { "Ball", "A cheap but nice-looking ball to play", 100.0 },
+    { "Orange", "Something to eat and refresh", 50.0 }
+};
+
+if (products.find({"Car", "", 0.0}) != products.end())       // the old way
+    std::cout << "Found\n"; 
+
+
+std::set<Product, std::less<>> products2 { ... };
+
+if (products2.find("Car") != products2.end())                  // the new way
+    std::cout << "Found \n";
+```
+After: [Wikipedia](https://en.wikipedia.org/wiki/C%2B%2B14#Heterogeneous_lookup_in_associative_containers) and [Bartłomiej Filipek](https://www.bfilipek.com/2019/05/heterogeneous-lookup-cpp14.html)
+
 ## Acknowledgements
 * [cppreference](http://en.cppreference.com/w/cpp) - especially useful for finding examples and documentation of new library features.
 * [C++ Rvalue References Explained](http://thbecker.net/articles/rvalue_references/section_01.html) - a great introduction I used to understand rvalue references, perfect forwarding, and move semantics.
