@@ -323,6 +323,9 @@ string s = get<string>(t);  // Compile-time error due to ambiguity
 ```
 After: [Wikipedia](https://en.wikipedia.org/wiki/C%2B%2B14#Tuple_addressing_via_type)
 
+### Constexpr for: \<chrono\>, \<complex\>, \<array\>, \<init_list\>, \<utility\>, \<tuple\>
+Base types and methods of these std libraries are marked as `constexpr` as of c++14 and can be used in user-defined `constexpr` entities.
+
 ## Acknowledgements
 * [cppreference](http://en.cppreference.com/w/cpp) - especially useful for finding examples and documentation of new library features.
 * [C++ Rvalue References Explained](http://thbecker.net/articles/rvalue_references/section_01.html) - a great introduction I used to understand rvalue references, perfect forwarding, and move semantics.
