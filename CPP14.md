@@ -312,6 +312,17 @@ if (products2.find("Car") != products2.end())                  // the new way
 ```
 After: [Wikipedia](https://en.wikipedia.org/wiki/C%2B%2B14#Heterogeneous_lookup_in_associative_containers) and [Bartłomiej Filipek](https://www.bfilipek.com/2019/05/heterogeneous-lookup-cpp14.html)
 
+
+### Tuple addressing via type: `std::get<T>()`
+The `std::tuple` type introduced in C++11 allows an aggregate of typed values to be indexed by a compile-time constant integer. `C++14` extends this to allow fetching from a tuple by type instead of by index. If the tuple has more than one element of the type, a compile-time error results:
+```c++
+tuple<string, string, int> t("foo", "bar", 7);
+int i = get<int>(t);        // i == 7
+int j = get<2>(t);          // Same as before: j == 7
+string s = get<string>(t);  // Compile-time error due to ambiguity
+```
+After: [Wikipedia](https://en.wikipedia.org/wiki/C%2B%2B14#Tuple_addressing_via_type)
+
 ## Acknowledgements
 * [cppreference](http://en.cppreference.com/w/cpp) - especially useful for finding examples and documentation of new library features.
 * [C++ Rvalue References Explained](http://thbecker.net/articles/rvalue_references/section_01.html) - a great introduction I used to understand rvalue references, perfect forwarding, and move semantics.
