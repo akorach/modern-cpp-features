@@ -326,6 +326,20 @@ After: [Wikipedia](https://en.wikipedia.org/wiki/C%2B%2B14#Tuple_addressing_via_
 ### Constexpr for: \<chrono\>, \<complex\>, \<array\>, \<init_list\>, \<utility\>, \<tuple\>
 Base types and methods of these std libraries are marked as `constexpr` as of c++14 and can be used in user-defined `constexpr` entities.
 
+### Improved std::integral_constant
+The `std::integral_constant`'s value can now be retrieved also using an `operator()`:
+```c++
+using two_t = std::integral_constant<int, 2>;
+using four_t = std::integral_constant<int, 4>;
+
+// Old option
+static_assert(two_t::value*2 == four_t::value, "2*2 != 4");
+
+// New option
+static_assert(two_t()*2 == four_t(), "2*2 != 4");
+```
+`std::integral_constant` is used for metaprogramming: https://en.cppreference.com/w/cpp/types/integral_constant
+
 ## Acknowledgements
 * [cppreference](http://en.cppreference.com/w/cpp) - especially useful for finding examples and documentation of new library features.
 * [C++ Rvalue References Explained](http://thbecker.net/articles/rvalue_references/section_01.html) - a great introduction I used to understand rvalue references, perfect forwarding, and move semantics.
