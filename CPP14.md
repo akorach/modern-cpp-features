@@ -340,6 +340,13 @@ static_assert(two_t()*2 == four_t(), "2*2 != 4");
 ```
 `std::integral_constant` is used for metaprogramming: https://en.cppreference.com/w/cpp/types/integral_constant
 
+### Null forward iterators - renamed to singular iterators
+A forward iterator that is initialized without reference to any container is called a null forward iterator (singular iterator). Singular iterators always compare equal.
+
+Use case: If you have a derived classes with containers, but the base doesn't have one, and you still want to allow polymorphic access to these containers.
+
+As of C++20 many types of iterators have become legacy iterators with the introduction of ranges: https://en.cppreference.com/w/cpp/named_req/ForwardIterator#Singular_iterators
+
 ## Acknowledgements
 * [cppreference](http://en.cppreference.com/w/cpp) - especially useful for finding examples and documentation of new library features.
 * [C++ Rvalue References Explained](http://thbecker.net/articles/rvalue_references/section_01.html) - a great introduction I used to understand rvalue references, perfect forwarding, and move semantics.
