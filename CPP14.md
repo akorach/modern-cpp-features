@@ -347,6 +347,51 @@ Use case: If you have a derived classes with containers, but the base doesn't ha
 
 As of C++20 many types of iterators have become legacy iterators with the introduction of ranges: https://en.cppreference.com/w/cpp/named_req/ForwardIterator#Singular_iterators
 
+### std::quoted
+```c++
+int main()
+{
+    std::stringstream ss;
+    std::string in = "String with spaces, and embedded \"quotes\" too";
+    std::string out;
+ 
+    ss << std::quoted(in);
+    std::cout << "read in     [" << in << "]\n"
+              << "stored as   [" << ss.str() << "]\n";
+ 
+    ss >> std::quoted(out);
+    std::cout << "written out [" << out << "]\n";
+}
+```
+Will output:
+```c++
+read in     [String with spaces, and embedded "quotes" too]
+stored as   ["String with spaces, and embedded \"quotes\" too"]
+written out [String with spaces, and embedded "quotes" too]
+```
+Whereas:
+```c++
+int main()
+{
+    std::stringstream ss;
+    std::string in = "String with spaces, and embedded \"quotes\" too";
+    std::string out;
+ 
+    ss << in;
+    std::cout << "read in     [" << in << "]\n"
+              << "stored as   [" << ss.str() << "]\n";
+ 
+    ss >> std::quoted(out);
+    std::cout << "written out [" << out << "]\n";
+}
+```
+Will output (notice how line 2 and 3 changed):
+```c++
+read in     [String with spaces, and embedded "quotes" too]
+stored as   [String with spaces, and embedded "quotes" too]
+written out [String]
+```
+
 ## Acknowledgements
 * [cppreference](http://en.cppreference.com/w/cpp) - especially useful for finding examples and documentation of new library features.
 * [C++ Rvalue References Explained](http://thbecker.net/articles/rvalue_references/section_01.html) - a great introduction I used to understand rvalue references, perfect forwarding, and move semantics.
