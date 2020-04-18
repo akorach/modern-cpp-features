@@ -392,6 +392,37 @@ stored as   [String with spaces, and embedded "quotes" too]
 written out [String]
 ```
 
+### std::exchange
+This function can be used when implementing move assignment operators and move constructors:
+```c++
+struct S
+{
+  int n;
+ 
+  S(S&& other) noexcept 
+    : n{std::exchange(other.n, 0)}
+  {}
+ 
+  S& operator=(S&& other) noexcept 
+  {
+    if(this != &other)
+        n = std::exchange(other.n, 0); // move n, while leaving zero in other.n
+    return *this;
+  }
+};
+```
+Possible implementation:
+```c++
+template<typename T, typename U = T> constexpr // constexpr since C++20
+T exchange(T& obj, U&& new_value)
+{
+    T old_value = std::move(obj);
+    obj = std::forward<U>(new_value);
+    return old_value;
+}
+```
+From: [cppreference](https://en.cppreference.com/w/cpp/utility/exchange)
+
 ## Acknowledgements
 * [cppreference](http://en.cppreference.com/w/cpp) - especially useful for finding examples and documentation of new library features.
 * [C++ Rvalue References Explained](http://thbecker.net/articles/rvalue_references/section_01.html) - a great introduction I used to understand rvalue references, perfect forwarding, and move semantics.
