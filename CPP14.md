@@ -355,11 +355,11 @@ int main()
     std::string in = "String with spaces, and embedded \"quotes\" too";
     std::string out;
  
-    ss << std::quoted(in);
+    ss << std::quoted(in);   // surrounds with quotes and escapes the existing ones
     std::cout << "read in     [" << in << "]\n"
               << "stored as   [" << ss.str() << "]\n";
  
-    ss >> std::quoted(out);
+    ss >> std::quoted(out); // removes the quotes and the escapes
     std::cout << "written out [" << out << "]\n";
 }
 ```
@@ -381,7 +381,7 @@ int main()
     std::cout << "read in     [" << in << "]\n"
               << "stored as   [" << ss.str() << "]\n";
  
-    ss >> std::quoted(out);
+    ss >> out; // removes the quotes and the escapes
     std::cout << "written out [" << out << "]\n";
 }
 ```
