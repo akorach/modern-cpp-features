@@ -423,6 +423,16 @@ T exchange(T& obj, U&& new_value)
 ```
 From: [cppreference](https://en.cppreference.com/w/cpp/utility/exchange)
 
+### Dual-Range std::equal, std::is_permutation, std::mismatch
+Dual-range overloads were added to make it possible to compare two whole different ranges (e.g. vectors, strings) safely.
+Example:
+```c++
+vector<int> v1 = { 1, 4 9 };
+vector<int> v2 = { 1, 4, 9, 16, 25, 36, 49 };
+vector<int> v3 = { 1, 2, 3, 4 };
+assert(!equal(v1.begin(), v1.end(), v2.begin(), v2.end());  // this wasn't possible before!
+```
+
 ## Acknowledgements
 * [cppreference](http://en.cppreference.com/w/cpp) - especially useful for finding examples and documentation of new library features.
 * [C++ Rvalue References Explained](http://thbecker.net/articles/rvalue_references/section_01.html) - a great introduction I used to understand rvalue references, perfect forwarding, and move semantics.
