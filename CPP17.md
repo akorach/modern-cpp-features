@@ -48,7 +48,7 @@ Self-explanatory - `static_assert` is no longer required to be called with a mes
 
 ### typename in a template template parameter
 Allows you to use `typename` instead of `class` when declaring a template template parameter. Normal type parameters can use them interchangeably, but template template parameters were restricted to `class`, so this change unifies these forms somewhat.
-```
+```c++
 template<typename T> struct A {};
 template<typename T> using B = int;
 
