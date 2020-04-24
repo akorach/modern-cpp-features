@@ -5,13 +5,13 @@ Many of these descriptions and examples come from various resources (see [Acknow
 
 C++17 includes the following new language features:
 - [new rules for auto deduction from braced-init-list](#new-rules-for-auto-deduction-from-braced-init-list)
+- [nested namespaces](#nested-namespaces)
 - [template argument deduction for class templates](#template-argument-deduction-for-class-templates)
 - [declaring non-type template parameters with auto](#declaring-non-type-template-parameters-with-auto)
 - [folding expressions](#folding-expressions)
 - [constexpr lambda](#constexpr-lambda)
 - [lambda capture this by value](#lambda-capture-this-by-value)
 - [inline variables](#inline-variables)
-- [nested namespaces](#nested-namespaces)
 - [structured bindings](#structured-bindings)
 - [selection statements with initializer](#selection-statements-with-initializer)
 - [constexpr if](#constexpr-if)
@@ -86,6 +86,19 @@ struct MyContainer {
 };
 MyContainer c1 {1}; // OK MyContainer<int>
 MyContainer c2; // OK MyContainer<float>
+```
+
+### Nested namespaces
+Allows you to introduce namespaces with a shortened syntax.
+```c++
+namespace A { namespace B { namespace C {
+ int i;
+}}}
+
+// vs.
+namespace A::B::C {
+  int i;
+}
 ```
 
 ### Declaring non-type template parameters with auto
@@ -190,22 +203,6 @@ struct S {
   int id;
   static inline int count{0}; // declare and initialize count to 0 within the class
 };
-```
-
-### Nested namespaces
-Using the namespace resolution operator to create nested namespace definitions.
-```c++
-namespace A {
-  namespace B {
-    namespace C {
-      int i;
-    }
-  }
-}
-// vs.
-namespace A::B::C {
-  int i;
-}
 ```
 
 ### Structured bindings
