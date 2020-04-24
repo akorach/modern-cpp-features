@@ -64,6 +64,16 @@ C<B> cb; // ok, not a class template
 ```
 After: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#typename-in-a-template-template-parameter)
 
+### Removing trigraphs
+What trigraphs are: 
+The source character set of C source programs is contained within the 7-bit ASCII character set but is a superset of the ISO 646-1983 Invariant Code Set. Trigraph sequences allow C programs to be written using only the ISO (International Standards Organization) Invariant Code Set. Trigraphs are sequences of three characters (introduced by two consecutive question marks) that the compiler replaces with their corresponding punctuation characters. You can use trigraphs in C source files with a character set that does not contain convenient graphic representations for some punctuation characters.
+
+C++17 removes trigraphs from the language. Implementations may continue to support trigraphs as part of the implementation-defined mapping from the physical source file to the basic source character set, though the standard encourages implementations not to do so. Through C++14, trigraphs are supported as in C.
+
+From [MSDN Trigraphs](https://docs.microsoft.com/en-us/cpp/c-language/trigraphs?redirectedfrom=MSDN&view=vs-2019)
+
+Trigraphs will no longer have to be escaped, nor will they be recognised in code.
+
 ### Template argument deduction for class templates
 Automatic template argument deduction much like how it's done for functions, but now including class constructors.
 ```c++
