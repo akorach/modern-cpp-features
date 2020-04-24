@@ -43,6 +43,9 @@ auto x4 = { 3 };     // decltype(x4) is std::initializer_list<int>
 auto x5 {3};         // x3 is int
 ```
 
+### `static_assert` with no message
+Self-explanatory - `static_assert` is no longer required to be called with a message. A condition is enough.
+
 ### Template argument deduction for class templates
 Automatic template argument deduction much like how it's done for functions, but now including class constructors.
 ```c++
