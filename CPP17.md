@@ -4,10 +4,10 @@
 Many of these descriptions and examples come from various resources (see [Acknowledgements](#acknowledgements) section), summarized in my own words.
 
 C++17 includes the following new language features:
+- [new rules for auto deduction from braced-init-list](#new-rules-for-auto-deduction-from-braced-init-list)
 - [template argument deduction for class templates](#template-argument-deduction-for-class-templates)
 - [declaring non-type template parameters with auto](#declaring-non-type-template-parameters-with-auto)
 - [folding expressions](#folding-expressions)
-- [new rules for auto deduction from braced-init-list](#new-rules-for-auto-deduction-from-braced-init-list)
 - [constexpr lambda](#constexpr-lambda)
 - [lambda capture this by value](#lambda-capture-this-by-value)
 - [inline variables](#inline-variables)
@@ -32,6 +32,16 @@ C++17 includes the following new library features:
 - [parallel algorithms](#parallel-algorithms)
 
 ## C++17 Language Features
+
+### New rules for auto deduction from braced-init-list
+Changes to `auto` deduction when used with the uniform initialization syntax. Previously, `auto x {3};` deduced a `std::initializer_list<int>`, now it's deduced as `int`.
+```c++
+auto x1 = {1, 2.0};  // error: cannot deduce element type
+auto x2 = {1, 2, 3}; // x2 is std::initializer_list<int>
+auto x3 {1, 2, 3};   // error: not a single element
+auto x4 = { 3 };     // decltype(x4) is std::initializer_list<int>
+auto x5 {3};         // x3 is int
+```
 
 ### Template argument deduction for class templates
 Automatic template argument deduction much like how it's done for functions, but now including class constructors.
@@ -83,15 +93,6 @@ auto sum(Args... args) {
     return (... + args);
 }
 sum(1.0, 2.0f, 3); // == 6.0
-```
-
-### New rules for auto deduction from braced-init-list
-Changes to `auto` deduction when used with the uniform initialization syntax. Previously, `auto x {3};` deduces a `std::initializer_list<int>`, which now deduces to `int`.
-```c++
-auto x1 {1, 2, 3}; // error: not a single element
-auto x2 = {1, 2, 3}; // x2 is std::initializer_list<int>
-auto x3 {3}; // x3 is int
-auto x4 {3.0}; // x4 is double
 ```
 
 ### constexpr lambda
