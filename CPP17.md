@@ -43,8 +43,26 @@ auto x4 = { 3 };     // decltype(x4) is std::initializer_list<int>
 auto x5 {3};         // x3 is int
 ```
 
-### `static_assert` with no message
+### static_assert with no message
 Self-explanatory - `static_assert` is no longer required to be called with a message. A condition is enough.
+
+### typename in a template template parameter
+Allows you to use `typename` instead of `class` when declaring a template template parameter. Normal type parameters can use them interchangeably, but template template parameters were restricted to `class`, so this change unifies these forms somewhat.
+```
+template<typename T> struct A {};
+template<typename T> using B = int;
+
+Before:
+template<template<typename> class X> struct C;
+C<A> ca; // ok
+C<B> cb; // ok, not a class template
+
+After:
+template<template<typename> typename X> struct C;
+C<A> ca; // ok
+C<B> cb; // ok, not a class template
+```
+After: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#typename-in-a-template-template-parameter)
 
 ### Template argument deduction for class templates
 Automatic template argument deduction much like how it's done for functions, but now including class constructors.
