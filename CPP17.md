@@ -7,6 +7,7 @@ C++17 includes the following new language features:
 - [new rules for auto deduction from braced-init-list](#new-rules-for-auto-deduction-from-braced-init-list)
 - [nested namespaces](#nested-namespaces)
 - [template argument deduction for class templates](#template-argument-deduction-for-class-templates)
+- [utf-8 character literals](#utf-8-character-literals)
 - [declaring non-type template parameters with auto](#declaring-non-type-template-parameters-with-auto)
 - [folding expressions](#folding-expressions)
 - [constexpr lambda](#constexpr-lambda)
@@ -15,7 +16,6 @@ C++17 includes the following new language features:
 - [structured bindings](#structured-bindings)
 - [selection statements with initializer](#selection-statements-with-initializer)
 - [constexpr if](#constexpr-if)
-- [utf-8 character literals](#utf-8-character-literals)
 - [direct-list-initialization of enums](#direct-list-initialization-of-enums)
 - [fallthrough, nodiscard, maybe_unused attributes](#fallthrough-nodiscard-maybe_unused-attributes)
 
@@ -119,6 +119,15 @@ oldStuff::legacy(); // Emits warning
 ```
 From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#attributes-for-namespaces-and-enumerators)
 
+
+### UTF-8 character literals
+A character literal that begins with `u8` is a character literal of type `char`. The value of a UTF-8 character literal is equal to its ISO 10646 code point value.
+```c++
+char x = u8'x';
+```
+Rationale: [StackOverflow](https://stackoverflow.com/questions/31970111/what-is-the-point-of-the-utf-8-character-literals-proposed-for-c17)
+
+
 ### Declaring non-type template parameters with auto
 Following the deduction rules of `auto`, while respecting the non-type template parameter list of allowable types[\*], template arguments can be deduced from the types of its arguments:
 ```c++
@@ -133,6 +142,7 @@ auto seq = std::integer_sequence<int, 0, 1, 2>();
 auto seq2 = my_integer_sequence<0, 1, 2>();
 ```
 \* - For example, you cannot use a `double` as a template parameter type, which also makes this an invalid deduction using `auto`.
+
 
 ### Folding expressions
 A fold expression performs a fold of a template parameter pack over a binary operator.
@@ -289,12 +299,6 @@ static_assert(isIntegral<char>() == true);
 static_assert(isIntegral<double>() == false);
 struct S {};
 static_assert(isIntegral<S>() == false);
-```
-
-### UTF-8 character literals
-A character literal that begins with `u8` is a character literal of type `char`. The value of a UTF-8 character literal is equal to its ISO 10646 code point value.
-```c++
-char x = u8'x';
 ```
 
 ### Direct list initialization of enums
