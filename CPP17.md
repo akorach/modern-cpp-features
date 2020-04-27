@@ -175,6 +175,17 @@ void (*q)() noexcept = S();   // error: cannot convert to pointer to noexcept fu
 From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#make-exception-specifications-part-of-the-type-system)
 
 
+### Aggregate initialization of classes with base classes
+If a class was derived from some other type using aggregate initialisation wasn't possible. But now the restriction is removed.
+```c++
+struct Base { int a1, a2; };
+struct Derived : Base { int b1; };
+
+Derived d1{{1, 2}, 3};      // full explicit initialization
+Derived d1{{}, 1};          // the base is value initialized
+```
+From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#aggregate-initialization-of-classes-with-base-classes)
+
 ### Template argument deduction for class templates
 Automatic template argument deduction much like how it's done for functions, but now including class constructors.
 ```c++
