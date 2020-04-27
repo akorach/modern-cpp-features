@@ -101,6 +101,24 @@ namespace A::B::C {
 }
 ```
 
+### Attributes for namespaces and enumerators
+Attributes on enumerators and namespaces are now permitted.
+```c++
+enum E {
+  foo = 0,
+  bar [[deprecated]] = foo
+};
+
+E e = bar; // Emits warning
+
+namespace [[deprecated]] oldStuff{
+    void legacy();
+}
+
+oldStuff::legacy(); // Emits warning
+```
+From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#attributes-for-namespaces-and-enumerators)
+
 ### Declaring non-type template parameters with auto
 Following the deduction rules of `auto`, while respecting the non-type template parameter list of allowable types[\*], template arguments can be deduced from the types of its arguments:
 ```c++
