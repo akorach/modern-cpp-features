@@ -128,6 +128,18 @@ char x = u8'x';
 Rationale: [StackOverflow](https://stackoverflow.com/questions/31970111/what-is-the-point-of-the-utf-8-character-literals-proposed-for-c17)
 
 
+### Allow constant evaluation for all non-type template arguments
+Remove syntactic restrictions for pointers, references, and pointers to members that appear as non-type template parameters. For instance:
+```c++
+template<int *p> struct A {};
+int n;
+A<&n> a; // ok
+
+constexpr int *p() { return &n; }
+A<p()> b; // error before C++17
+```
+From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#allow-constant-evaluation-for-all-non-type-template-arguments)
+
 ### Declaring non-type template parameters with auto
 Following the deduction rules of `auto`, while respecting the non-type template parameter list of allowable types[\*], template arguments can be deduced from the types of its arguments:
 ```c++
