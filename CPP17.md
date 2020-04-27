@@ -8,8 +8,8 @@ C++17 includes the following new language features:
 - [nested namespaces](#nested-namespaces)
 - [template argument deduction for class templates](#template-argument-deduction-for-class-templates)
 - [utf-8 character literals](#utf-8-character-literals)
-- [declaring non-type template parameters with auto](#declaring-non-type-template-parameters-with-auto)
 - [folding expressions](#folding-expressions)
+- [declaring non-type template parameters with auto](#declaring-non-type-template-parameters-with-auto)
 - [constexpr lambda](#constexpr-lambda)
 - [lambda capture this by value](#lambda-capture-this-by-value)
 - [inline variables](#inline-variables)
@@ -140,26 +140,12 @@ A<p()> b; // error before C++17
 ```
 From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#allow-constant-evaluation-for-all-non-type-template-arguments)
 
-### Declaring non-type template parameters with auto
-Following the deduction rules of `auto`, while respecting the non-type template parameter list of allowable types[\*], template arguments can be deduced from the types of its arguments:
-```c++
-template <auto... seq>
-struct my_integer_sequence {
-  // Implementation here ...
-};
-
-// Explicitly pass type `int` as template argument.
-auto seq = std::integer_sequence<int, 0, 1, 2>();
-// Type is deduced to be `int`.
-auto seq2 = my_integer_sequence<0, 1, 2>();
-```
-\* - For example, you cannot use a `double` as a template parameter type, which also makes this an invalid deduction using `auto`.
-
 
 ### Folding expressions
 A fold expression performs a fold of a template parameter pack over a binary operator.
 * An expression of the form `(... op e)` or `(e op ...)`, where `op` is a fold-operator and `e` is an unexpanded parameter pack, are called _unary folds_.
 * An expression of the form `(e1 op ... op e2)`, where `op` are fold-operators, is called a _binary fold_. Either `e1` or `e2` is an unexpanded parameter pack, but not both.
+Allows to avoid explicit use of recursion.
 ```c++
 template <typename... Args>
 bool logicalAnd(Args... args) {
@@ -178,6 +164,23 @@ auto sum(Args... args) {
 }
 sum(1.0, 2.0f, 3); // == 6.0
 ```
+
+
+### Declaring non-type template parameters with auto
+Following the deduction rules of `auto`, while respecting the non-type template parameter list of allowable types[\*], template arguments can be deduced from the types of its arguments:
+```c++
+template <auto... seq>
+struct my_integer_sequence {
+  // Implementation here ...
+};
+
+// Explicitly pass type `int` as template argument.
+auto seq = std::integer_sequence<int, 0, 1, 2>();
+// Type is deduced to be `int`.
+auto seq2 = my_integer_sequence<0, 1, 2>();
+```
+\* - For example, you cannot use a `double` as a template parameter type, which also makes this an invalid deduction using `auto`.
+
 
 ### constexpr lambda
 Compile-time lambdas using `constexpr`.
