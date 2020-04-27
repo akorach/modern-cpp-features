@@ -163,6 +163,18 @@ For any operator not listed above, a unary fold expression with an empty paramet
 From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#unary-fold-expressions-and-empty-parameter-packs)
 
 
+### Make exception specifications part of the type system
+Previously exception specifications for a function weren't part of the function's type. This changed in C++17 and now we’ll get an error in this case:
+```c++
+void (*p)();
+void (**pp)() noexcept = &p;   // error: cannot convert to pointer to noexcept function
+
+struct S { typedef void (*p)(); operator p(); };
+void (*q)() noexcept = S();   // error: cannot convert to pointer to noexcept function
+```
+From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#make-exception-specifications-part-of-the-type-system)
+
+
 ### Template argument deduction for class templates
 Automatic template argument deduction much like how it's done for functions, but now including class constructors.
 ```c++
