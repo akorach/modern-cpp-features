@@ -6,9 +6,9 @@ Many of these descriptions and examples come from various resources (see [Acknow
 C++17 includes the following new language features:
 - [new rules for auto deduction from braced-init-list](#new-rules-for-auto-deduction-from-braced-init-list)
 - [nested namespaces](#nested-namespaces)
-- [template argument deduction for class templates](#template-argument-deduction-for-class-templates)
 - [utf-8 character literals](#utf-8-character-literals)
 - [folding expressions](#folding-expressions)
+- [template argument deduction for class templates](#template-argument-deduction-for-class-templates)
 - [declaring non-type template parameters with auto](#declaring-non-type-template-parameters-with-auto)
 - [constexpr lambda](#constexpr-lambda)
 - [lambda capture this by value](#lambda-capture-this-by-value)
@@ -74,19 +74,6 @@ From [MSDN Trigraphs](https://docs.microsoft.com/en-us/cpp/c-language/trigraphs?
 
 Trigraphs will no longer have to be escaped, nor will they be recognised in code.
 
-### Template argument deduction for class templates
-Automatic template argument deduction much like how it's done for functions, but now including class constructors.
-```c++
-template <typename T = float>
-struct MyContainer {
-  T val;
-  MyContainer() : val{} {}
-  MyContainer(T val) : val{val} {}
-  // ...
-};
-MyContainer c1 {1}; // OK MyContainer<int>
-MyContainer c2; // OK MyContainer<float>
-```
 
 ### Nested namespaces
 Allows you to introduce namespaces with a shortened syntax.
@@ -141,7 +128,7 @@ A<p()> b; // error before C++17
 From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#allow-constant-evaluation-for-all-non-type-template-arguments)
 
 
-### Folding expressions
+### Fold expressions
 A fold expression performs a fold of a template parameter pack over a binary operator.
 * An expression of the form `(... op e)` or `(e op ...)`, where `op` is a fold-operator and `e` is an unexpanded parameter pack, are called _unary folds_.
 * An expression of the form `(e1 op ... op e2)`, where `op` are fold-operators, is called a _binary fold_. Either `e1` or `e2` is an unexpanded parameter pack, but not both.
@@ -163,6 +150,31 @@ auto sum(Args... args) {
     return (... + args);
 }
 sum(1.0, 2.0f, 3); // == 6.0
+```
+
+### Unary fold expressions and empty parameter packs
+If the parameter pack is empty then the value of the fold is:
+```c++
+&& // true
+|| // false
+,  // void()
+```
+For any operator not listed above, a unary fold expression with an empty parameter pack is ill-formed.
+From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#unary-fold-expressions-and-empty-parameter-packs)
+
+
+### Template argument deduction for class templates
+Automatic template argument deduction much like how it's done for functions, but now including class constructors.
+```c++
+template <typename T = float>
+struct MyContainer {
+  T val;
+  MyContainer() : val{} {}
+  MyContainer(T val) : val{val} {}
+  // ...
+};
+MyContainer c1 {1}; // OK MyContainer<int>
+MyContainer c2; // OK MyContainer<float>
 ```
 
 
