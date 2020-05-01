@@ -186,6 +186,7 @@ Derived d1{{}, 1};          // the base is value initialized
 ```
 From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#aggregate-initialization-of-classes-with-base-classes)
 
+
 ### \_\_has_include in preprocessor conditionals
 This feature allows a C++ program to directly, reliably and portably determine whether or not a library header is available for inclusion.
 
@@ -201,6 +202,26 @@ Example: This demonstrates a way to use a library optional facility only if it i
 #else
 #  define have_optional 0
 #endif
+```
+
+### Lambda capture of `*this`
+Capturing `this` in a lambda's environment was previously reference-only. An example of where this is problematic is asynchronous code using callbacks that require an object to be available, potentially past its lifetime. `*this` (C++17) will now make a copy of the current object, while `this` (C++11) continues to capture by reference.
+```c++
+struct MyObj {
+  int value {123};
+  auto getValueCopy() {
+    return [*this] { return value; };
+  }
+  auto getValueRef() {
+    return [this] { return value; };
+  }
+};
+MyObj mo;
+auto valueCopy = mo.getValueCopy();
+auto valueRef = mo.getValueRef();
+mo.value = 321;
+valueCopy(); // 123
+valueRef(); // 321
 ```
 
 ### Template argument deduction for class templates
@@ -255,26 +276,6 @@ constexpr int addOne(int n) {
 }
 
 static_assert(addOne(1) == 2);
-```
-
-### Lambda capture `this` by value
-Capturing `this` in a lambda's environment was previously reference-only. An example of where this is problematic is asynchronous code using callbacks that require an object to be available, potentially past its lifetime. `*this` (C++17) will now make a copy of the current object, while `this` (C++11) continues to capture by reference.
-```c++
-struct MyObj {
-  int value {123};
-  auto getValueCopy() {
-    return [*this] { return value; };
-  }
-  auto getValueRef() {
-    return [this] { return value; };
-  }
-};
-MyObj mo;
-auto valueCopy = mo.getValueCopy();
-auto valueRef = mo.getValueRef();
-mo.value = 321;
-valueCopy(); // 123
-valueRef(); // 321
 ```
 
 ### Inline variables
