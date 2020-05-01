@@ -232,6 +232,31 @@ Handle h { 42 }; // OK
 ```
 Allows to introduce easy-to-use strong-typed type aliases.
 
+
+### constexpr lambda
+Compile-time lambdas using `constexpr`.
+```c++
+auto identity = [](int n) constexpr { return n; };
+static_assert(identity(123) == 123);
+```
+```c++
+constexpr auto add = [](int x, int y) {
+  auto L = [=] { return x; };
+  auto R = [=] { return y; };
+  return [=] { return L() + R(); };
+};
+
+static_assert(add(1, 2)() == 3);
+```
+```c++
+constexpr int addOne(int n) {
+  return [n] { return n + 1; }();
+}
+
+static_assert(addOne(1) == 2);
+```
+
+
 ### Template argument deduction for class templates
 Automatic template argument deduction much like how it's done for functions, but now including class constructors.
 ```c++
@@ -262,29 +287,6 @@ auto seq2 = my_integer_sequence<0, 1, 2>();
 ```
 \* - For example, you cannot use a `double` as a template parameter type, which also makes this an invalid deduction using `auto`.
 
-
-### constexpr lambda
-Compile-time lambdas using `constexpr`.
-```c++
-auto identity = [](int n) constexpr { return n; };
-static_assert(identity(123) == 123);
-```
-```c++
-constexpr auto add = [](int x, int y) {
-  auto L = [=] { return x; };
-  auto R = [=] { return y; };
-  return [=] { return L() + R(); };
-};
-
-static_assert(add(1, 2)() == 3);
-```
-```c++
-constexpr int addOne(int n) {
-  return [n] { return n + 1; }();
-}
-
-static_assert(addOne(1) == 2);
-```
 
 ### Inline variables
 The inline specifier can be applied to variables as well as to functions. A variable declared inline has the same semantics as a function declared inline.
