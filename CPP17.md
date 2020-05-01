@@ -186,6 +186,23 @@ Derived d1{{}, 1};          // the base is value initialized
 ```
 From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#aggregate-initialization-of-classes-with-base-classes)
 
+### \_\_has_include in preprocessor conditionals
+This feature allows a C++ program to directly, reliably and portably determine whether or not a library header is available for inclusion.
+
+Example: This demonstrates a way to use a library optional facility only if it is available.
+```c++
+#if __has_include(<optional>)
+#  include <optional>
+#  define have_optional 1
+#elif __has_include(<experimental/optional>)
+#  include <experimental/optional>
+#  define have_optional 1
+#  define experimental_optional 1
+#else
+#  define have_optional 0
+#endif
+```
+
 ### Template argument deduction for class templates
 Automatic template argument deduction much like how it's done for functions, but now including class constructors.
 ```c++
