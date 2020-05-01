@@ -259,11 +259,13 @@ static_assert(addOne(1) == 2);
 ### [[fallthrough]] attribute
 `[[fallthrough]]` indicates to the compiler that falling through in a switch statement is intended behavior.
 ```c++
+int a = 1;
 switch (n) {
-  case 1: [[fallthrough]]
-    // ...
+  case 1:
+    ++a;
+    [[fallthrough]];
   case 2:
-    // ...
+    ++a;
     break;
 }
 ```
