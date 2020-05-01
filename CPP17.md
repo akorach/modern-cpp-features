@@ -256,6 +256,18 @@ constexpr int addOne(int n) {
 static_assert(addOne(1) == 2);
 ```
 
+### [[fallthrough]] attribute
+`[[fallthrough]]` indicates to the compiler that falling through in a switch statement is intended behavior.
+```c++
+switch (n) {
+  case 1: [[fallthrough]]
+    // ...
+  case 2:
+    // ...
+    break;
+}
+```
+
 
 ### Template argument deduction for class templates
 Automatic template argument deduction much like how it's done for functions, but now including class constructors.
@@ -379,18 +391,9 @@ struct S {};
 static_assert(isIntegral<S>() == false);
 ```
 
-### fallthrough, nodiscard, maybe_unused attributes
+### nodiscard, maybe_unused attributes
 C++17 introduces three new attributes: `[[fallthrough]]`, `[[nodiscard]]` and `[[maybe_unused]]`.
-* `[[fallthrough]]` indicates to the compiler that falling through in a switch statement is intended behavior.
-```c++
-switch (n) {
-  case 1: [[fallthrough]]
-    // ...
-  case 2:
-    // ...
-    break;
-}
-```
+
 
 * `[[nodiscard]]` issues a warning when either a function or class has this attribute and its return value is discarded.
 ```c++
