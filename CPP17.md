@@ -271,6 +271,35 @@ switch (n) {
 ```
 
 
+### [[nodiscard]] attribute
+`[[nodiscard]]` issues a warning when the return value of a function with this attribute is discarded.
+```c++
+[[nodiscard]] bool do_something() {
+  return is_success; // true for success, false for failure
+}
+
+do_something(); // warning: ignoring return value of 'bool do_something()',
+                // declared with attribute 'nodiscard'
+```
+
+`[[nodiscard]]` can also refer to a class. A warning is then issued whenever an object of this type is returned by value and the value is discarded.
+```c++
+// Only issues a warning when `error_info` is returned by value.
+struct [[nodiscard]] error_info {
+  // ...
+};
+
+error_info do_something() {
+  error_info ei;
+  // ...
+  return ei;
+}
+
+do_something(); // warning: ignoring returned value of type 'error_info',
+                // declared with attribute 'nodiscard'
+```
+
+
 ### Template argument deduction for class templates
 Automatic template argument deduction much like how it's done for functions, but now including class constructors.
 ```c++
@@ -393,34 +422,8 @@ struct S {};
 static_assert(isIntegral<S>() == false);
 ```
 
-### nodiscard, maybe_unused attributes
-C++17 introduces three new attributes: `[[fallthrough]]`, `[[nodiscard]]` and `[[maybe_unused]]`.
 
-
-* `[[nodiscard]]` issues a warning when either a function or class has this attribute and its return value is discarded.
-```c++
-[[nodiscard]] bool do_something() {
-  return is_success; // true for success, false for failure
-}
-
-do_something(); // warning: ignoring return value of 'bool do_something()',
-                // declared with attribute 'nodiscard'
-```
-```c++
-// Only issues a warning when `error_info` is returned by value.
-struct [[nodiscard]] error_info {
-  // ...
-};
-
-error_info do_something() {
-  error_info ei;
-  // ...
-  return ei;
-}
-
-do_something(); // warning: ignoring returned value of type 'error_info',
-                // declared with attribute 'nodiscard'
-```
+### [[maybe_unused]] attribute
 
 * `[[maybe_unused]]` indicates to the compiler that a variable or parameter might be unused and is intended.
 ```c++
