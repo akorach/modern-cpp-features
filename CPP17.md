@@ -311,6 +311,12 @@ void my_callback(std::string msg, [[maybe_unused]] bool error) {
 An example use case is when you want to provide two platform-dependent implementations of a function, one of which doesn't make use of one of the arguments.
 
 
+### Hexadecimal floating-point literals
+Allows to express some special floating point values, for example, the smallest normal IEEE-754 single precision value is readily written as `0x1.0p-126`.
+```c++
+double d = 0x1.2p3; // hex fraction 1.2 (decimal 1.125) scaled by 2^3, that is 9.0
+```
+
 ### Template argument deduction for class templates
 Automatic template argument deduction much like how it's done for functions, but now including class constructors.
 ```c++
