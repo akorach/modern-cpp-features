@@ -224,6 +224,14 @@ valueCopy(); // 123
 valueRef(); // 321
 ```
 
+### Direct list initialization of enums
+Allows to initialize enum class with a fixed underlying type without the necessity to resort to casts:
+```c++
+enum class Handle : uint32_t { Invalid = 0 };
+Handle h { 42 }; // OK
+```
+Allows to introduce easy-to-use strong-typed type aliases.
+
 ### Template argument deduction for class templates
 Automatic template argument deduction much like how it's done for functions, but now including class constructors.
 ```c++
@@ -367,16 +375,6 @@ static_assert(isIntegral<char>() == true);
 static_assert(isIntegral<double>() == false);
 struct S {};
 static_assert(isIntegral<S>() == false);
-```
-
-### Direct list initialization of enums
-Enums can now be initialized using braced syntax.
-```c++
-enum byte : unsigned char {};
-byte b {0}; // OK
-byte c {-1}; // ERROR
-byte d = byte{1}; // OK
-byte e = byte{256}; // ERROR
 ```
 
 ### fallthrough, nodiscard, maybe_unused attributes
