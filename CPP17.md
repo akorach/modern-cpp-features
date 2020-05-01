@@ -300,6 +300,17 @@ do_something(); // warning: ignoring returned value of type 'error_info',
 ```
 
 
+### [[maybe_unused]] attribute
+`[[maybe_unused]]` indicates to the compiler that a variable or parameter might be intentionally unused.
+```c++
+void my_callback(std::string msg, [[maybe_unused]] bool error) {
+  // Don't care if `msg` is an error message, just log it.
+  log(msg);
+}
+```
+An example use case is when you want to provide two platform-dependent implementations of a function, one of which doesn't make use of one of the arguments.
+
+
 ### Template argument deduction for class templates
 Automatic template argument deduction much like how it's done for functions, but now including class constructors.
 ```c++
@@ -422,16 +433,6 @@ struct S {};
 static_assert(isIntegral<S>() == false);
 ```
 
-
-### [[maybe_unused]] attribute
-
-* `[[maybe_unused]]` indicates to the compiler that a variable or parameter might be unused and is intended.
-```c++
-void my_callback(std::string msg, [[maybe_unused]] bool error) {
-  // Don't care if `msg` is an error message, just log it.
-  log(msg);
-}
-```
 
 ## C++17 Library Features
 
