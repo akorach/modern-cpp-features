@@ -299,7 +299,6 @@ do_something(); // warning: ignoring returned value of type 'error_info',
                 // declared with attribute 'nodiscard'
 ```
 
-
 ### [[maybe_unused]] attribute
 `[[maybe_unused]]` indicates to the compiler that a variable or parameter might be intentionally unused.
 ```c++
@@ -332,6 +331,7 @@ void f() {
     do-task();
 }
 ```
+From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#using-attribute-namespaces-without-repetition)
 
 ### Template argument deduction for class templates
 Automatic template argument deduction much like how it's done for functions, but now including class constructors.
