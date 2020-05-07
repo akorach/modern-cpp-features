@@ -270,7 +270,6 @@ switch (n) {
 }
 ```
 
-
 ### [[nodiscard]] attribute
 `[[nodiscard]]` issues a warning when the return value of a function with this attribute is discarded.
 ```c++
@@ -367,6 +366,23 @@ f<10>();               // deduces int
 ### Guaranteed copy elision
 Copy elision for temporaries (prvalues), not for Named RVO, where glvalues are involved.
 See: https://jonasdevlieghere.com/guaranteed-copy-elision/
+
+
+### Stricter expression evaluation order
+As a rule, given an expression such as f(a, b, c), the order in which the sub-expressions f, a, b, c (which are of arbitrary shapes) are evaluated is left unspecified by the standard. Here are a few examples:
+```c++
+// unspecified behaviour below!
+f(i++, i);
+
+v[i] = i++;
+
+std::map<int, int> m;
+m[0] = m.size(); // {{0, 0}} or {{0, 1}} ?
+```
+Here's a summary of changes:
+* Postfix expressions are evaluated from left to right. This includes functions calls and member selection expressions.
+* Assignment expressions are evaluated from right to left. This includes compound assignments.
+* Operands to shift operators are evaluated from left to right.
 
 
 ### Inline variables
