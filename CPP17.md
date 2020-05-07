@@ -364,6 +364,11 @@ template <auto value> void f() { }
 f<10>();               // deduces int
 ```
 
+### Guaranteed copy elision
+Copy elision for temporaries (prvalues), not for Named RVO, where glvalues are involved.
+See: https://jonasdevlieghere.com/guaranteed-copy-elision/
+
+
 ### Inline variables
 The inline specifier can be applied to variables as well as to functions. A variable declared inline has the same semantics as a function declared inline.
 ```c++
