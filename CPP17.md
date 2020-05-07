@@ -9,7 +9,7 @@ C++17 includes the following new language features:
 - [utf-8 character literals](#utf-8-character-literals)
 - [folding expressions](#folding-expressions)
 - [template argument deduction for class templates](#template-argument-deduction-for-class-templates)
-- [declaring non-type template parameters with auto](#declaring-non-type-template-parameters-with-auto)
+- [non-type template parameters with auto type](#non-type-template-parameters-with-auto-type)
 - [constexpr lambda](#constexpr-lambda)
 - [lambda capture this by value](#lambda-capture-this-by-value)
 - [inline variables](#inline-variables)
@@ -357,21 +357,12 @@ foo(std::pair<int, char>(42, 'z'));
 foo(std::pair(42, 'z'));
 ```
 
-### Declaring non-type template parameters with auto
-Following the deduction rules of `auto`, while respecting the non-type template parameter list of allowable types[\*], template arguments can be deduced from the types of its arguments:
+### Non-type template parameters with auto type
+Automatically deduce the type of non-type template parameters:
 ```c++
-template <auto... seq>
-struct my_integer_sequence {
-  // Implementation here ...
-};
-
-// Explicitly pass type `int` as template argument.
-auto seq = std::integer_sequence<int, 0, 1, 2>();
-// Type is deduced to be `int`.
-auto seq2 = my_integer_sequence<0, 1, 2>();
+template <auto value> void f() { }
+f<10>();               // deduces int
 ```
-\* - For example, you cannot use a `double` as a template parameter type, which also makes this an invalid deduction using `auto`.
-
 
 ### Inline variables
 The inline specifier can be applied to variables as well as to functions. A variable declared inline has the same semantics as a function declared inline.
