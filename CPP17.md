@@ -346,7 +346,16 @@ struct MyContainer {
 MyContainer c1 {1}; // OK MyContainer<int>
 MyContainer c2; // OK MyContainer<float>
 ```
+Second example:
+```c++
+void foo(std::pair<int, char>);
 
+// Before C++17
+foo(std::pair<int, char>(42, 'z'));
+
+// C++17
+foo(std::pair(42, 'z'));
+```
 
 ### Declaring non-type template parameters with auto
 Following the deduction rules of `auto`, while respecting the non-type template parameter list of allowable types[\*], template arguments can be deduced from the types of its arguments:
