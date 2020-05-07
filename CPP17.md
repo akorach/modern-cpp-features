@@ -317,6 +317,22 @@ Allows to express some special floating point values, for example, the smallest 
 double d = 0x1.2p3; // hex fraction 1.2 (decimal 1.125) scaled by 2^3, that is 9.0
 ```
 
+### Using attribute namespaces without repetition
+Simplifies the case where you want to use multiple attributes:
+```c++
+void f() {
+    [[rpr::kernel, rpr::target(cpu,gpu)]] // repetition
+    do-task();
+}
+```
+After the change:
+```c++
+void f() {
+    [[using rpr: kernel, target(cpu,gpu)]]
+    do-task();
+}
+```
+
 ### Template argument deduction for class templates
 Automatic template argument deduction much like how it's done for functions, but now including class constructors.
 ```c++
