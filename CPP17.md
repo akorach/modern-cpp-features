@@ -480,6 +480,31 @@ auto get_value(T t) {
      }
 }
 ```
+From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#constexpr-if-statements)
+
+
+### Init-statements for if and switch
+New versions of the if and switch statements for C++: if (init; condition) and switch (init; condition).
+
+Before:
+```c++
+{
+    auto val = GetValue();
+    if (condition(val))
+        // on success
+    else
+        // on false...
+}
+```
+After:
+```c++
+if (auto val = GetValue(); condition(val))
+    // on success
+else
+    // on false...
+```
+From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#init-statements-for-if-and-switch)
+
 
 ### Inline variables
 The inline specifier can be applied to variables as well as to functions. A variable declared inline has the same semantics as a function declared inline.
