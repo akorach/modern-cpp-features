@@ -309,6 +309,16 @@ void my_callback(std::string msg, [[maybe_unused]] bool error) {
 An example use case is when you want to provide two platform-dependent implementations of a function, one of which doesn't make use of one of the arguments.
 
 
+### Ignore unknown attributes
+Clarifies that implementations should ignore any attribute namespaces which they don't support, as this used to be unspecified.
+```c++
+//compilers which don't support MyCompilerSpecificNamespace will ignore this attribute
+[[MyCompilerSpecificNamespace::do_special_thing]]
+void foo();
+```
+From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#ignore-unknown-attributes)
+
+
 ### Hexadecimal floating-point literals
 Allows to express some special floating point values, for example, the smallest normal IEEE-754 single precision value is readily written as `0x1.0p-126`.
 ```c++
