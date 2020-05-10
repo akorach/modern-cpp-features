@@ -428,6 +428,59 @@ for (const auto& [key, value] : mapping) {
 ```
 
 
+### constexpr if
+The static-if for C++. This allows you to discard branches of an if statement at compile-time based on a constant expression condition.
+```c++
+template <typename T>
+constexpr bool isIntegral() {
+  if constexpr (std::is_integral<T>::value) {
+    return true;
+  } else {
+    return false;
+  }
+}
+static_assert(isIntegral<int>() == true);
+static_assert(isIntegral<char>() == true);
+static_assert(isIntegral<double>() == false);
+struct S {};
+static_assert(isIntegral<S>() == false);
+```
+This removes a lot of the necessity for tag dispatching and SFINAE.
+
+SFINAE:
+```c++
+template <typename T, std::enable_if_t<std::is_arithmetic<T>{}>* = nullptr>
+auto get_value(T t) {/*...*/}
+
+template <typename T, std::enable_if_t<!std::is_arithmetic<T>{}>* = nullptr>
+auto get_value(T t) {/*...*/}
+```
+Tag dispatching:
+```c++
+template <typename T>
+auto get_value(T t, std::true_type) {/*...*/}
+
+template <typename T>
+auto get_value(T t, std::false_type) {/*...*/}
+
+template <typename T>
+auto get_value(T t) {
+    return get_value(t, std::is_arithmetic<T>{});
+}
+```
+if constexpr:
+```c++
+template <typename T>
+auto get_value(T t) {
+     if constexpr (std::is_arithmetic_v<T>) {
+         //...
+     }
+     else {
+         //...
+     }
+}
+```
+
 ### Inline variables
 The inline specifier can be applied to variables as well as to functions. A variable declared inline has the same semantics as a function declared inline.
 ```c++
@@ -478,23 +531,6 @@ switch (Foo gadget(args); auto s = gadget.status()) {
 }
 ```
 
-### constexpr if
-Write code that is instantiated depending on a compile-time condition.
-```c++
-template <typename T>
-constexpr bool isIntegral() {
-  if constexpr (std::is_integral<T>::value) {
-    return true;
-  } else {
-    return false;
-  }
-}
-static_assert(isIntegral<int>() == true);
-static_assert(isIntegral<char>() == true);
-static_assert(isIntegral<double>() == false);
-struct S {};
-static_assert(isIntegral<S>() == false);
-```
 
 
 ## C++17 Library Features
