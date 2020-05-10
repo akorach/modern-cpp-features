@@ -384,6 +384,39 @@ Here's a summary of changes:
 * Assignment expressions are evaluated from right to left. This includes compound assignments.
 * Operands to shift operators are evaluated from left to right.
 
+### Structured bindings
+A proposal for de-structuring initialization, that would allow writing `auto [ x, y, z ] = expr;` where the type of `expr` was a tuple-like object, whose elements would be bound to the variables `x`, `y`, and `z` (which this construct declares). _Tuple-like objects_ include `std::tuple`, `std::pair`, `std::array`, and aggregate structures.
+Before:
+```c++
+int a = 0;
+double b = 0.0;
+long c = 0;
+std::tie(a, b, c) = tuple; // a, b, c need to be declared first
+```
+After:
+```c++
+auto [ a, b, c ] = tuple;
+```
+More examples
+```c++
+using Coordinate = std::pair<int, int>;
+Coordinate origin() {
+  return Coordinate{0, 0};
+}
+
+const auto [ x, y ] = origin();
+
+std::unordered_map<std::string, int> mapping {
+  {"a", 1},
+  {"b", 2},
+  {"c", 3}
+};
+
+for (const auto& [key, value] : mapping) {
+  // Do something with key and value
+}
+```
+
 
 ### Inline variables
 The inline specifier can be applied to variables as well as to functions. A variable declared inline has the same semantics as a function declared inline.
@@ -408,30 +441,7 @@ struct S {
 };
 ```
 
-### Structured bindings
-A proposal for de-structuring initialization, that would allow writing `auto [ x, y, z ] = expr;` where the type of `expr` was a tuple-like object, whose elements would be bound to the variables `x`, `y`, and `z` (which this construct declares). _Tuple-like objects_ include `std::tuple`, `std::pair`, `std::array`, and aggregate structures.
-```c++
-using Coordinate = std::pair<int, int>;
-Coordinate origin() {
-  return Coordinate{0, 0};
-}
 
-const auto [ x, y ] = origin();
-x; // == 0
-y; // == 0
-```
-```c++
-std::unordered_map<std::string, int> mapping {
-  {"a", 1},
-  {"b", 2},
-  {"c", 3}
-};
-
-// Destructure by reference.
-for (const auto& [key, value] : mapping) {
-  // Do something with key and value
-}
-```
 
 ### Selection statements with initializer
 New versions of the `if` and `switch` statements which simplify common code patterns and help users keep scopes tight.
