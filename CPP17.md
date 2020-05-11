@@ -507,28 +507,40 @@ From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#init-statem
 
 
 ### Inline variables
-The inline specifier can be applied to variables as well as to functions. A variable declared inline has the same semantics as a function declared inline.
-```c++
-// Disassembly example using compiler explorer.
-struct S { int x; };
-inline S x1 = S{321}; // mov esi, dword ptr [x1]
-                      // x1: .long 321
+Previously only methods/functions could be specified as inline, now you can do the same with variables, inside a header file.
 
-S x2 = S{123};        // mov eax, dword ptr [.L_ZZ4mainE2x2]
-                      // mov dword ptr [rbp - 8], eax
-                      // .L_ZZ4mainE2x2: .long 123
+A variable declared inline has the same semantics as a function declared inline: it can be defined, identically, in multiple translation units, must be defined in every translation unit in which it is used, and the behavior of the program is as if there is exactly one variable.
+
+So, in practical terms the feature allows you to use the `inline` keyword to define an external linkage `const` namespace scope variable, or any `static` class data member, in a header file, so that the multiple definitions that result when that header is included in multiple translation units are OK with the linker – it just chooses one of them.
+```c++
+struct MyClass
+{
+    static const int sValue;
+};
+
+inline int const MyClass::sValue = 777;
 ```
-
-It can also be used to declare and define a static member variable, such that it does not need to be initialized in the source file.
+Or even:
 ```c++
-struct S {
-  S() : id{count++} {}
-  ~S() { count--; }
-  int id;
-  static inline int count{0}; // declare and initialize count to 0 within the class
+struct MyClass
+{
+    inline static const int sValue = 777;
 };
 ```
+Before C++17 we had to resort to:
+```c++
+template<typename Dummy>
+struct MyClass_
+{
+    static int const sNumber;
+};
 
+template<typename Dummy>
+int const MyClass_<Dummy>::sNumber = 42;
+
+using MyClass = MyClass_<void>;    // Allows you to write `MyClass::sNumber`.
+```
+From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#inline-variables)
 
 
 ### Selection statements with initializer
