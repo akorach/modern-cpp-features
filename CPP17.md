@@ -543,6 +543,12 @@ using MyClass = MyClass_<void>;    // Allows you to write `MyClass::sNumber`.
 From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#inline-variables)
 
 
+### Removing deprecated exception specifications from C++17
+Dynamic exception specifications were deprecated in C++11. This paper formally proposes removing the feature from C++17, while retaining the (still) deprecated throw() specification strictly as an alias for noexcept(true).
+
+From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#removing-deprecated-exception-specifications-from-c17)
+
+
 ### Selection statements with initializer
 New versions of the `if` and `switch` statements which simplify common code patterns and help users keep scopes tight.
 ```c++
