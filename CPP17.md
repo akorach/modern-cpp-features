@@ -576,6 +576,38 @@ struct Overloader : Ts... {
 
 ## C++17 Library Features
 
+### std::void_t
+Utility metafunction that maps a sequence of any types to the type `void`. Form:
+```c++
+#include <type_traits>
+
+template< class... >
+using void_t = void;
+```
+This metafunction is used in template metaprogramming to detect ill-formed types in SFINAE context:
+```c++
+// primary template handles types that have no nested ::type member:
+template< class, class = std::void_t<> >
+struct has_type_member : std::false_type { };
+ 
+// specialization recognizes types that do have a nested ::type member:
+template< class T >
+struct has_type_member<T, std::void_t<typename T::type>> : std::true_type { };
+```
+It can also be used to detect validity of an expression:
+```c++
+// primary template handles types that do not support pre-increment:
+template< class, class = std::void_t<> >
+struct has_pre_increment_member : std::false_type { };
+// specialization recognizes types that do support pre-increment:
+template< class T >
+struct has_pre_increment_member<T,
+           std::void_t<decltype( ++std::declval<T&>() )>
+       > : std::true_type { };
+```
+From: [cppreference](https://en.cppreference.com/w/cpp/types/void_t)
+
+
 ### std::variant
 The class template `std::variant` represents a type-safe `union`. An instance of `std::variant` at any given time holds a value of one of its alternative types (it's also possible for it to be valueless).
 ```c++
