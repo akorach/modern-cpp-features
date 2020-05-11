@@ -549,32 +549,30 @@ Dynamic exception specifications were deprecated in C++11. This paper formally p
 From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#removing-deprecated-exception-specifications-from-c17)
 
 
-### Selection statements with initializer
-New versions of the `if` and `switch` statements which simplify common code patterns and help users keep scopes tight.
-```c++
-{
-  std::lock_guard<std::mutex> lk(mx);
-  if (v.empty()) v.push_back(val);
-}
-// vs.
-if (std::lock_guard<std::mutex> lk(mx); v.empty()) {
-  v.push_back(val);
-}
-```
-```c++
-Foo gadget(args);
-switch (auto s = gadget.status()) {
-  case OK: gadget.zip(); break;
-  case Bad: throw BadFoo(s.message());
-}
-// vs.
-switch (Foo gadget(args); auto s = gadget.status()) {
-  case OK: gadget.zip(); break;
-  case Bad: throw BadFoo(s.message());
-}
-```
+### Pack expansions in using-declarations
+Allows you to inject names with using-declarations from all types in a parameter pack.
 
+In order to expose operator() from all base classes in a variadic template, we used to have to resort to recursion:
+```c++
+template <typename T, typename... Ts>
+struct Overloader : T, Overloader<Ts...> {
+    using T::operator();
+    using Overloader<Ts...>::operator();
+    // […]
+};
 
+template <typename T> struct Overloader<T> : T {
+    using T::operator();
+};
+```
+Now we can simply expand the parameter pack in the using-declaration:
+```c++
+template <typename... Ts>
+struct Overloader : Ts... {
+    using Ts::operator()...;
+    // […]
+};
+```
 
 ## C++17 Library Features
 
