@@ -588,6 +588,10 @@ then this destructor is being invoked as part of stack unwinding due to a new ex
 From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#stduncaughtexceptions)
 
 
+### std::size(), std::empty() and std::data()
+Generic functions to return these qualities for containers.
+
+
 ### std::void_t
 Utility metafunction that maps a sequence of any types to the type `void`. Form:
 ```c++
