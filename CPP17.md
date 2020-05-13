@@ -621,6 +621,12 @@ If one thread has acquired the shared lock (through `lock_shared`, `try_lock_sha
 Interesting trivia on why `std:shared_timed_mutex` was added in C++14 but `std::shared_mutex` only in C++17 https://stackoverflow.com/questions/40207171/why-shared-timed-mutex-is-defined-in-c14-but-shared-mutex-in-c17
 
 
+### Type traits variable templates
+Following the success of the \_t alias templates for type traits, a matching set of \_v variable templates have been proposed. The language support for variable templates arrived too late to confidently make this change for C++14, but experience since has shown that such variable templates are more succinct, can clean up the text in a similar way that the \_t aliases have been widely adopted through the standard, and the author's experience using them in his own implementation of the standard type traits library is that code is much simpler when written using such variable templates directly, rather than turning a value into a type, then performing template manipulations on the type, before turning the type back into a value.
+
+The impact on the standard is that many places that reference `some_trait<T>::value` would instead use `some_trait_v<T>`. The saving is not quite as great as in the case of alias templates, as there is no irksome typename to remove. However, the consistecy of using \_t and \_v to refer to traits, and not using `::something` to extract meaning is compelling.
+
+
 ### std::void_t
 Utility metafunction that maps a sequence of any types to the type `void`. Form:
 ```c++
