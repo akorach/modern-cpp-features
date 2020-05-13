@@ -592,6 +592,19 @@ From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#stduncaught
 Generic functions to return these qualities for containers.
 
 
+### std::bool_constant
+`std::integral_constant` wraps a static constant of specified type. It is the base class for the C++ type traits.
+The behavior of a program that adds specializations for `integral_constant` is undefined.
+
+A helper alias template std::bool_constant is defined for the common case where T is bool:
+```c++
+template< class T, T v >
+struct integral_constant;
+
+template <bool B>
+using bool_constant = integral_constant<bool, B>;
+```
+
 ### std::void_t
 Utility metafunction that maps a sequence of any types to the type `void`. Form:
 ```c++
