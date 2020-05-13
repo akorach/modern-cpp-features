@@ -576,6 +576,18 @@ struct Overloader : Ts... {
 
 ## C++17 Library Features
 
+### std::uncaught_exceptions()
+The function returns the number of uncaught exception objects in the current thread.
+
+This might be useful when implementing proper Scope Guards that works also during stack unwinding:
+
+A type that wants to know whether its destructor is being run to unwind this object can query uncaught_exceptions
+in its constructor and store the result, then query uncaught_exceptions again in its destructor; if the result is different,
+then this destructor is being invoked as part of stack unwinding due to a new exception that was thrown later than the object’s construction.
+
+From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#stduncaughtexceptions)
+
+
 ### std::void_t
 Utility metafunction that maps a sequence of any types to the type `void`. Form:
 ```c++
