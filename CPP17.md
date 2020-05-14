@@ -668,6 +668,27 @@ template<typename... Ts>
   ```
 Of course the three traits can be combined to form arbitrary predicates, the specialization `conjunction<disjunction<foo, bar>, negation<baz>>` corresponds to `(foo::value || bar::value) && !baz::value`.
 
+### Parallel algorithms
+Parallel versions/overloads of most of std algorithms, plus a few new algorithms such as `reduce`, `transform_reduce`, `for_each`.
+The support comes in the form of *parallel execution policies*: `seq`, `par` and `par_unseq` which translate to "sequential", "parallel" and "parallel unsequenced".
+
+```c++
+std::vector<int> v = genLargeVector();
+
+// standard sequential sort
+std::sort(v.begin(), v.end());
+
+// explicitly sequential sort
+std::sort(std::seq, v.begin(), v.end());
+
+// permitting parallel execution
+std::sort(std::par, v.begin(), v.end());
+
+// permitting vectorization as well
+std::sort(std::par_unseq, v.begin(), v.end());
+```
+From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#merged-the-parallelism-ts-aka-parallel-stl)
+
 
 ### std::void_t
 Utility metafunction that maps a sequence of any types to the type `void`. Form:
@@ -857,16 +878,7 @@ m.insert(std::move(e));
 // m == { { 1, "one" }, { 3, "three" }, { 4, "two" } }
 ```
 
-### Parallel algorithms
-Many of the STL algorithms, such as the `copy`, `find` and `sort` methods, started to support the *parallel execution policies*: `seq`, `par` and `par_unseq` which translate to "sequentially", "parallel" and "parallel unsequenced".
 
-```c++
-std::vector<int> longVector;
-// Find element using parallel execution policy
-auto result1 = std::find(std::execution::par, std::begin(longVector), std::end(longVector), 2);
-// Sort elements using sequential execution policy
-auto result2 = std::sort(std::execution::seq, std::begin(longVector), std::end(longVector));
-```
 
 ## Acknowledgements
 * [cppreference](http://en.cppreference.com/w/cpp) - especially useful for finding examples and documentation of new library features.
