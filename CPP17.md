@@ -627,6 +627,48 @@ Following the success of the \_t alias templates for type traits, a matching set
 The impact on the standard is that many places that reference `some_trait<T>::value` would instead use `some_trait_v<T>`. The saving is not quite as great as in the case of alias templates, as there is no irksome typename to remove. However, the consistecy of using \_t and \_v to refer to traits, and not using `::something` to extract meaning is compelling.
 
 
+### Logical operator type traits
+From the [proposal](http://www.open-std.org/jtc1/sc22/wg21/docs/papers/2015/p0013r1.html):
+
+I propose three new type traits for performing logical operations with other traits, conjunction, disjunction, and negation, corresponding to the operators &&, ||, and ! respectively. These utilities are used extensively in libstdc++ and are valuable additions to any metaprogramming toolkit.
+```c++
+// logical conjunction:
+template<class... B> struct conjunction;
+
+// logical disjunction:
+template<class... B> struct disjunction;
+
+// logical negation:
+template<class B> struct negation;
+```
+Motivation:
+
+The proposed traits apply a logical operator to the result of one or more type traits, for example the specialization `conjunction<is_copy_constructible<T>, is_copy_assignable<T>>` has a `BaseCharacteristic` of `true_type` only if `T` is copy constructible and copy assignable, or in other words it has a `BaseCharacteristic` equivalent to `bool_constant<is_copy_constructible_v<T> && is_copy_assignable_v<T>>`.
+
+The traits are especially useful when dealing with variadic templates where you want to apply the same predicate or transformation to every element in a parameter pack, for example `disjunction<is_nothrow_default_constructible<T>...>` can be used to determine whether at least one of the types in the pack `T` has a non-throwing default constructor.
+
+To demonstrate how to use conjunction with is_same to make an 'all_same' trait, constraining a variadic function template so that all arguments have the same type can be done using conjunction<is_same<T, Ts>...>, for example:
+```c++
+// Accepts one or more arguments of the same type.
+template<typename T, typename... Ts>
+  enable_if_t< conjunction_v<is_same<T, Ts>...> >
+  func(T, Ts...)
+  { }
+```
+For the sake of clarity this function doesn't do perfect forwarding, but if the parameters were forwarding references the constraint would only be slightly more complicated: `conjunction_v<is_same<decay_t<T>, decay_t<Ts>>...>`.
+
+Constraining all elements of a parameter pack to a specific type can be done similarly:
+
+```c++
+// Accepts zero or more arguments of type int.
+template<typename... Ts>
+  enable_if_t< conjunction_v<is_same<int, Ts>...> >
+  func(Ts...)
+  { }
+  ```
+Of course the three traits can be combined to form arbitrary predicates, the specialization `conjunction<disjunction<foo, bar>, negation<baz>>` corresponds to `(foo::value || bar::value) && !baz::value`.
+
+
 ### std::void_t
 Utility metafunction that maps a sequence of any types to the type `void`. Form:
 ```c++
