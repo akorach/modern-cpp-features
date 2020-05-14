@@ -690,6 +690,9 @@ std::sort(std::par_unseq, v.begin(), v.end());
 From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#merged-the-parallelism-ts-aka-parallel-stl)
 
 
+### std::clamp()
+// TODO
+
 ### std::void_t
 Utility metafunction that maps a sequence of any types to the type `void`. Form:
 ```c++
