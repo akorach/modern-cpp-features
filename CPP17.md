@@ -700,6 +700,25 @@ Clamps the value either to min or to max if necessary.
 `std::hardware_constructive_interference_size`: Defines a maximum size of contiguous memory to promote true sharing, and is guaranteed to be at least `alignof(std::max_align_t)`.
 
 
+### std::filesystem
+The new `std::filesystem` library provides a standard way to manipulate files, directories, and paths in a filesystem. It largely mirrors the functionality of `boost::filesystem`, with some subtle differences.
+
+```c++
+namespace fs = std::filesystem;
+
+fs::path pathToShow(/* ... */);
+cout << "exists() = " << fs::exists(pathToShow) << "\n"
+     << "root_name() = " << pathToShow.root_name() << "\n"
+     << "root_path() = " << pathToShow.root_path() << "\n"
+     << "relative_path() = " << pathToShow.relative_path() << "\n"
+     << "parent_path() = " << pathToShow.parent_path() << "\n"
+     << "filename() = " << pathToShow.filename() << "\n"
+     << "stem() = " << pathToShow.stem() << "\n"
+     << "extension() = " << pathToShow.extension() << "\n";
+```
+Example from: From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#merged-file-system-ts)
+
+
 ### std::void_t
 Utility metafunction that maps a sequence of any types to the type `void`. Form:
 ```c++
@@ -819,22 +838,6 @@ auto add = [](int x, int y) {
   return x + y;
 };
 std::apply(add, std::make_tuple(1, 2)); // == 3
-```
-
-### std::filesystem
-The new `std::filesystem` library provides a standard way to manipulate files, directories, and paths in a filesystem.
-
-Here, a big file is copied to a temporary path if there is available space:
-```c++
-const auto bigFilePath {"bigFileToCopy"};
-if (std::filesystem::exists(bigFilePath)) {
-  const auto bigFileSize {std::filesystem::file_size(bigFilePath)};
-  std::filesystem::path tmpPath {"/tmp"};
-  if (std::filesystem::space(tmpPath).available > bigFileSize) {
-    std::filesystem::create_directory(tmpPath.append("example"));
-    std::filesystem::copy_file(bigFilePath, tmpPath.append("newFile"));
-  }
-}
 ```
 
 ### std::byte
