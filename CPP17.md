@@ -737,7 +737,11 @@ v.remove_prefix(std::min(v.find_first_not_of(" "), v.size()));
 str; //  == "   trim me"
 v; // == "trim me"
 ```
+More on string_view: 
 
+https://www.bfilipek.com/2018/07/string-view-perf.html
+
+https://www.bfilipek.com/2018/07/string-view-perf-followup.html
 
 ### std::void_t
 Utility metafunction that maps a sequence of any types to the type `void`. Form:
