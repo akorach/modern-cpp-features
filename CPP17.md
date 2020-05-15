@@ -693,6 +693,13 @@ From: [BFilipek](https://www.bfilipek.com/2017/01/cpp17features.html#merged-the-
 ### std::clamp()
 Clamps the value either to min or to max if necessary.
 
+
+### Hardware interference size	
+`std::hardware_destructive_interference_size`: Defines a minimum offset between two objects to avoid false sharing, and is guaranteed to be at least `alignof(std::max_align_t)`.
+
+`std::hardware_constructive_interference_size`: Defines a maximum size of contiguous memory to promote true sharing, and is guaranteed to be at least `alignof(std::max_align_t)`.
+
+
 ### std::void_t
 Utility metafunction that maps a sequence of any types to the type `void`. Form:
 ```c++
