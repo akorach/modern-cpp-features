@@ -762,6 +762,8 @@ Possible use cases:
 * User Interface - controls might hold anything
 * Entities in an editor
 
+The general gist is that `std::any` allows passing ownership of arbitrary values across boundaries that don’t know about those types.
+
 From: [BFilipek](https://www.bfilipek.com/2018/06/any.html)
 
 
