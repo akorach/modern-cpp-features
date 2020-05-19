@@ -753,6 +753,16 @@ std::any_cast<int>(x) // == 5
 std::any_cast<int&>(x) = 10;
 std::any_cast<int>(x) // == 10
 ```
+Possible use cases:
+* In Libraries - when a library type has to hold or pass anything without knowing the set of available types.
+* Parsing files - if you really cannot specify what are the supported types
+* Message passing
+* Bindings with a scripting language
+* Implementing an interpreter for a scripting language
+* User Interface - controls might hold anything
+* Entities in an editor
+
+From: [BFilipek](https://www.bfilipek.com/2018/06/any.html)
 
 
 ### std::void_t
