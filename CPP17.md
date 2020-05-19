@@ -668,6 +668,39 @@ template<typename... Ts>
   ```
 Of course the three traits can be combined to form arbitrary predicates, the specialization `conjunction<disjunction<foo, bar>, negation<baz>>` corresponds to `(foo::value || bar::value) && !baz::value`.
 
+
+### std::void_t
+Utility metafunction that maps a sequence of any types to the type `void`. Form:
+```c++
+#include <type_traits>
+
+template< class... >
+using void_t = void;
+```
+This metafunction is used in template metaprogramming to detect ill-formed types in SFINAE context:
+```c++
+// primary template handles types that have no nested ::type member:
+template< class, class = std::void_t<> >
+struct has_type_member : std::false_type { };
+ 
+// specialization recognizes types that do have a nested ::type member:
+template< class T >
+struct has_type_member<T, std::void_t<typename T::type>> : std::true_type { };
+```
+It can also be used to detect validity of an expression:
+```c++
+// primary template handles types that do not support pre-increment:
+template< class, class = std::void_t<> >
+struct has_pre_increment_member : std::false_type { };
+// specialization recognizes types that do support pre-increment:
+template< class T >
+struct has_pre_increment_member<T,
+           std::void_t<decltype( ++std::declval<T&>() )>
+       > : std::true_type { };
+```
+From: [cppreference](https://en.cppreference.com/w/cpp/types/void_t)
+
+
 ### Parallel algorithms
 Parallel versions/overloads of most of std algorithms, plus a few new algorithms such as `reduce`, `transform_reduce`, `for_each`.
 The support comes in the form of *parallel execution policies*: `seq`, `par` and `par_unseq` which translate to "sequential", "parallel" and "parallel unsequenced".
@@ -767,49 +800,6 @@ The general gist is that `std::any` allows passing ownership of arbitrary values
 From: [BFilipek](https://www.bfilipek.com/2018/06/any.html)
 
 
-### std::void_t
-Utility metafunction that maps a sequence of any types to the type `void`. Form:
-```c++
-#include <type_traits>
-
-template< class... >
-using void_t = void;
-```
-This metafunction is used in template metaprogramming to detect ill-formed types in SFINAE context:
-```c++
-// primary template handles types that have no nested ::type member:
-template< class, class = std::void_t<> >
-struct has_type_member : std::false_type { };
- 
-// specialization recognizes types that do have a nested ::type member:
-template< class T >
-struct has_type_member<T, std::void_t<typename T::type>> : std::true_type { };
-```
-It can also be used to detect validity of an expression:
-```c++
-// primary template handles types that do not support pre-increment:
-template< class, class = std::void_t<> >
-struct has_pre_increment_member : std::false_type { };
-// specialization recognizes types that do support pre-increment:
-template< class T >
-struct has_pre_increment_member<T,
-           std::void_t<decltype( ++std::declval<T&>() )>
-       > : std::true_type { };
-```
-From: [cppreference](https://en.cppreference.com/w/cpp/types/void_t)
-
-
-### std::variant
-The class template `std::variant` represents a type-safe `union`. An instance of `std::variant` at any given time holds a value of one of its alternative types (it's also possible for it to be valueless).
-```c++
-std::variant<int, double> v{ 12 };
-std::get<int>(v); // == 12
-std::get<0>(v); // == 12
-v = 12.0;
-std::get<double>(v); // == 12.0
-std::get<1>(v); // == 12.0
-```
-
 ### std::optional
 The class template `std::optional` manages an optional contained value, i.e. a value that may or may not be present. A common use case for optional is the return value of a function that may fail.
 ```c++
@@ -827,6 +817,18 @@ create(true).value(); // == "Godzilla"
 if (auto str = create(true)) {
   // ...
 }
+```
+
+
+### std::variant
+The class template `std::variant` represents a type-safe `union`. An instance of `std::variant` at any given time holds a value of one of its alternative types (it's also possible for it to be valueless).
+```c++
+std::variant<int, double> v{ 12 };
+std::get<int>(v); // == 12
+std::get<0>(v); // == 12
+v = 12.0;
+std::get<double>(v); // == 12.0
+std::get<1>(v); // == 12.0
 ```
 
 
