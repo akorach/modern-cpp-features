@@ -743,6 +743,18 @@ https://www.bfilipek.com/2018/07/string-view-perf.html
 
 https://www.bfilipek.com/2018/07/string-view-perf-followup.html
 
+
+### std::any
+A type-safe container for single values of any type.
+```c++
+std::any x {5};
+x.has_value() // == true
+std::any_cast<int>(x) // == 5
+std::any_cast<int&>(x) = 10;
+std::any_cast<int>(x) // == 10
+```
+
+
 ### std::void_t
 Utility metafunction that maps a sequence of any types to the type `void`. Form:
 ```c++
@@ -803,16 +815,6 @@ create(true).value(); // == "Godzilla"
 if (auto str = create(true)) {
   // ...
 }
-```
-
-### std::any
-A type-safe container for single values of any type.
-```c++
-std::any x {5};
-x.has_value() // == true
-std::any_cast<int>(x) // == 5
-std::any_cast<int&>(x) = 10;
-std::any_cast<int>(x) // == 10
 ```
 
 
