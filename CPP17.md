@@ -879,7 +879,11 @@ A new set of standardised numerical functions. Here's the list: https://en.cppre
 
 
 ### Splicing for maps and sets
-Moving nodes and merging containers without the overhead of expensive copies, moves, or heap allocations/deallocations.
+It is now possible to move nodes and merge containers without the overhead of expensive copies, moves, or heap allocations and deallocations.
+
+After Herb Sutter:
+
+*You will now be able to directly move internal nodes from one node-based container directly into another container of the same type. Why is that important? Because it guarantees no memory allocation overhead, no copying of keys or values, and even no exceptions if the container’s comparison function doesn’t throw.*
 
 Moving elements from one map to another:
 ```c++
