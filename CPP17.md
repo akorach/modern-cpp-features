@@ -873,6 +873,11 @@ int j = std::to_integer<int>(c); // 0
 ```
 Note that `std::byte` is simply an enum, and braced initialization of enums become possible thanks to [direct-list-initialization of enums](#direct-list-initialization-of-enums).
 
+
+### Mathematical special functions
+A new set of standardised numerical functions. Here's the list: https://en.cppreference.com/w/cpp/numeric/special_functions
+
+
 ### Splicing for maps and sets
 Moving nodes and merging containers without the overhead of expensive copies, moves, or heap allocations/deallocations.
 
