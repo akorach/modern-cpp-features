@@ -831,6 +831,50 @@ std::get<double>(v); // == 12.0
 std::get<1>(v); // == 12.0
 ```
 
+### Splicing for maps and sets
+It is now possible to move (extract) nodes and merge containers without the overhead of expensive copies, moves, or heap allocations and deallocations.
+
+After Herb Sutter:
+
+*You will now be able to directly move internal nodes from one node-based container directly into another container of the same type. Why is that important? Because it guarantees no memory allocation overhead, no copying of keys or values, and even no exceptions if the container’s comparison function doesn’t throw.*
+
+Moving elements from one map to another through extraction:
+```c++
+std::map<int, string> src {{1, "one"}, {2, "two"}, {3, "buckle my shoe"}};
+std::map<int, string> dst {{3, "three"}};
+dst.insert(src.extract(src.find(1))); // Cheap remove and insert of { 1, "one" } from `src` to `dst`.
+dst.insert(src.extract(2)); // Cheap remove and insert of { 2, "two" } from `src` to `dst`.
+// dst == { { 1, "one" }, { 2, "two" }, { 3, "three" } };
+```
+
+Merging an entire set - duplicates are left in the source:
+```c++
+std::set<int> src {1, 3, 5};
+std::set<int> dst {2, 4, 5};
+dst.merge(src);
+// src == { 5 }
+// dst == { 1, 2, 3, 4, 5 }
+```
+
+Inserting elements which outlive the container:
+```c++
+auto elementFactory() {
+  std::set<...> s;
+  s.emplace(...);
+  return s.extract(s.begin());
+}
+s2.insert(elementFactory());
+```
+
+Changing the key of a map element:
+```c++
+std::map<int, string> m {{1, "one"}, {2, "two"}, {3, "three"}};
+auto e = m.extract(2);
+e.key() = 4;
+m.insert(std::move(e));
+// m == { { 1, "one" }, { 3, "three" }, { 4, "two" } }
+```
+
 
 ### std::invoke
 Invoke a `Callable` object with parameters. Examples of `Callable` objects are `std::function` or `std::bind` where an object can be called similarly to a regular function.
@@ -876,51 +920,6 @@ Note that `std::byte` is simply an enum, and braced initialization of enums beco
 
 ### Mathematical special functions
 A new set of standardised numerical functions. Here's the list: https://en.cppreference.com/w/cpp/numeric/special_functions
-
-
-### Splicing for maps and sets
-It is now possible to move nodes and merge containers without the overhead of expensive copies, moves, or heap allocations and deallocations.
-
-After Herb Sutter:
-
-*You will now be able to directly move internal nodes from one node-based container directly into another container of the same type. Why is that important? Because it guarantees no memory allocation overhead, no copying of keys or values, and even no exceptions if the container’s comparison function doesn’t throw.*
-
-Moving elements from one map to another:
-```c++
-std::map<int, string> src {{1, "one"}, {2, "two"}, {3, "buckle my shoe"}};
-std::map<int, string> dst {{3, "three"}};
-dst.insert(src.extract(src.find(1))); // Cheap remove and insert of { 1, "one" } from `src` to `dst`.
-dst.insert(src.extract(2)); // Cheap remove and insert of { 2, "two" } from `src` to `dst`.
-// dst == { { 1, "one" }, { 2, "two" }, { 3, "three" } };
-```
-
-Inserting an entire set:
-```c++
-std::set<int> src {1, 3, 5};
-std::set<int> dst {2, 4, 5};
-dst.merge(src);
-// src == { 5 }
-// dst == { 1, 2, 3, 4, 5 }
-```
-
-Inserting elements which outlive the container:
-```c++
-auto elementFactory() {
-  std::set<...> s;
-  s.emplace(...);
-  return s.extract(s.begin());
-}
-s2.insert(elementFactory());
-```
-
-Changing the key of a map element:
-```c++
-std::map<int, string> m {{1, "one"}, {2, "two"}, {3, "three"}};
-auto e = m.extract(2);
-e.key() = 4;
-m.insert(std::move(e));
-// m == { { 1, "one" }, { 3, "three" }, { 4, "two" } }
-```
 
 
 
