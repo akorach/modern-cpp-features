@@ -942,6 +942,17 @@ Functions for computing the greatest common divisor and the least common multipl
 Creates a forwarding call wrapper that returns the negation of the callable object it holds. `std::not_fn` is intended to replace the C++03-era negators `std::not1` and `std::not2`.
 
 
+### Elementary string conversions
+In addition to sophisticated locale-dependent parsers and formatters provided by the C++ I/O library, the C I/O library, C++ string converters, and C string converters, the header `<charconv>` provides light-weight, locale-independent, non-allocating, non-throwing parsers and formatters for arithmetic types: `td::to_chars`, `std::from_chars` and `std::chars_format`.
+
+`td::to_chars` - converts an integer or floating-point value to a character sequence
+
+`std::from_chars` - converts a character sequence to an integer or floating-point value
+
+`std::chars_format` - specifies formatting for std::to_chars and std::from_chars
+
+
+
 ### std::byte
 The new `std::byte` type provides a standard way of representing data as a byte. Benefits of using `std::byte` over `char` or `unsigned char` is that it is not a character type, and is also not an arithmetic type; while the only operator overloads available are bitwise operations.
 ```c++
