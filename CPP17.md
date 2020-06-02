@@ -938,6 +938,10 @@ This trait was introduced to make it possible to determine whether a type can be
 Functions for computing the greatest common divisor and the least common multiple of two integers.
 
 
+### std::not_fn
+Creates a forwarding call wrapper that returns the negation of the callable object it holds. `std::not_fn` is intended to replace the C++03-era negators `std::not1` and `std::not2`.
+
+
 ### std::byte
 The new `std::byte` type provides a standard way of representing data as a byte. Benefits of using `std::byte` over `char` or `unsigned char` is that it is not a character type, and is also not an arithmetic type; while the only operator overloads available are bitwise operations.
 ```c++
