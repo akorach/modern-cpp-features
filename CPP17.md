@@ -933,6 +933,11 @@ struct has_unique_object_representations;
 ```
 This trait was introduced to make it possible to determine whether a type can be correctly hashed by hashing its object representation as a byte array.
 
+
+### std::gcd and std::lcm
+Functions for computing the greatest common divisor and the least common multiple of two integers.
+
+
 ### std::byte
 The new `std::byte` type provides a standard way of representing data as a byte. Benefits of using `std::byte` over `char` or `unsigned char` is that it is not a character type, and is also not an arithmetic type; while the only operator overloads available are bitwise operations.
 ```c++
