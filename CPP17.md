@@ -876,6 +876,25 @@ m.insert(std::move(e));
 ```
 
 
+### std::make_from_tuple
+Allows to construct an object of type T, using the elements of a tuple-like object t as the arguments to the constructor.
+```c++
+#include <iostream>
+#include <tuple>
+ 
+struct Foo {
+    Foo(int first, float second, int third) {
+        std::cout << first << ", " << second << ", " << third << "\n";
+    }
+};
+ 
+int main()
+{
+   auto tuple = std::make_tuple(42, 3.14f, 0);
+   std::make_from_tuple<Foo>(std::move(tuple));
+}
+```
+
 ### std::invoke
 Invoke a `Callable` object with parameters. Examples of `Callable` objects are `std::function` or `std::bind` where an object can be called similarly to a regular function.
 ```c++
