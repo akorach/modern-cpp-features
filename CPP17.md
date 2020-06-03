@@ -970,6 +970,14 @@ int j = std::to_integer<int>(c); // 0
 Note that `std::byte` is simply an enum, and braced initialization of enums become possible thanks to [direct-list-initialization of enums](#direct-list-initialization-of-enums).
 
 
+### std::is_aggregate
+A type trait. Checks if `T` is an aggregate type. The member constant value is equal to `true` if `T` is an aggregate type and `false` otherwise.
+
+```c++
+template< class T >
+struct is_aggregate;
+```
+
 ### Mathematical special functions
 A new set of standardised numerical functions. Here's the list: https://en.cppreference.com/w/cpp/numeric/special_functions
 
