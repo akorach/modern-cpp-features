@@ -952,6 +952,11 @@ In addition to sophisticated locale-dependent parsers and formatters provided by
 `std::chars_format` - specifies formatting for std::to_chars and std::from_chars
 
 
+### std::scoped_lock
+A superior, deadlock-avoiding RAII-style replacement for the combined use of `std::lock` and `std::lock_guard` when locking multiple mutexes.
+
+When a `std::scoped_lock` object is created, it attempts to take ownership of the mutexes it is given. When control leaves the scope in which the `std::scoped_lock` object was created, the `std::scoped_lock` is destructed and the mutexes are released, in reverse order. If several mutexes are given, deadlock avoidance algorithm is used as if by `std::lock`.
+
 
 ### std::byte
 The new `std::byte` type provides a standard way of representing data as a byte. Benefits of using `std::byte` over `char` or `unsigned char` is that it is not a character type, and is also not an arithmetic type; while the only operator overloads available are bitwise operations.
